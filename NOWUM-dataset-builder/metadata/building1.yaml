@@ -1,0 +1,28 @@
+instance: 1   # we only look at the campus juelich
+original_name: campus_juelich   # just the name
+elec_meters:
+  1:
+    site_meter: true # this is the main meter of the building
+    device_model: Janitza_UMG_96S  # keys into meter_devices dictionary
+  2:
+    submeter_of: 1 # this is a submeter of the main meter of the building to measure an appliance.
+    device_model: Tasmota_Smart_Plug # keys into meter_devices dictionary
+  3:
+    submeter_of: 1
+    device_model: Tasmota_Smart_Plug
+  4:
+    submeter_of: 1
+    device_model: Tasmota_Smart_Plug
+  5:
+    submeter_of: 1
+    device_model: Tasmota_Smart_Plug
+  6:
+    submeter_of: 1
+    device_model: Tasmota_Smart_Plug
+
+appliances: # this is the list of appliances in the building which are measured.
+  - {type: television, instance: 1,  room: 00b17, meters: [2]}
+  - {type: microwave, instance: 1,  room: 00b17, meters: [3]}
+  - {type: electric shower heater, instance: 1,  room: 00b17, meters: [4]}
+  - {type: kettle, instance: 1,  room: 00b17, meters: [5]}
+  - {type: coffee maker, instance: 1,  room: 00b17, meters: [6]}

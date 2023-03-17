@@ -1,0 +1,7 @@
+# config to access the influxdb database
+
+influxHost: IP
+influxPort: PORT
+influxUsername: USERNAME
+influxPassword: PASSWIORD
+influxDatabse: NAME OF THE DATABASE IN INFLUXDB

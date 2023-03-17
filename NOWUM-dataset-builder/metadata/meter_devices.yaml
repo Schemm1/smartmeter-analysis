@@ -1,0 +1,39 @@
+Janitza_UMG_96S:
+  description: Universal metering device from Janitza.
+  sample_period: 130 # the interval between samples. In seconds.
+  max_sample_period: 300
+  measurements:
+  - physical_quantity: power
+    type: active
+    upper_limit: 10000
+    lower_limit: 0
+  - physical_quantity: power
+    type: apparent
+    upper_limit: 10000
+    lower_limit: 0
+  - physical_quantity: power
+    type: reactive
+    upper_limit: 10000
+    lower_limit: 0
+  wireless: false
+
+
+Tasmota_Smart_Plug:
+  description: Smart Plug flashed with tasmota firmware.
+  sample_period: 10 # the interval between samples. In seconds.
+  max_sample_period: 300
+  measurements:
+  - physical_quantity: power
+    type: active
+    upper_limit: 10000
+    lower_limit: 0
+  - physical_quantity: power
+    type: apparent
+    upper_limit: 10000
+    lower_limit: 0
+  - physical_quantity: power
+    type: reactive
+    upper_limit: 10000
+    lower_limit: 0
+  wireless: true
+

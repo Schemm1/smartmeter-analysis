@@ -1,0 +1,17 @@
+name: NOWUM-Energy-Dataset
+long_name: Dataset for electricity sensing
+creators:
+- NOWUM-Energy Institut
+- FH Aachen - University of Applied Sciences
+- Sejdija, Jonathan
+publication_date: 2023
+institution: FH Aachen - University of Applied Sciences
+contact: sejdija@fh-aachen.de
+description: Electricity data from campus Juelich of FH-Aachen in North Rhine-Westphalia, Germany
+subject: Createing a dataset for further NILM research with data which is being collected by the NOWUM-Energy Institute.
+number_of_buildings: 1
+timezone: Europe/Berlin
+geo_location:
+  locality: Juelich
+  country: DE
+schema: https://github.com/nilmtk/nilm_metadata/tree/v0.2
