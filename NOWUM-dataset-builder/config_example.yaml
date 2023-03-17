@@ -1,7 +1,30 @@
 # config to access the influxdb database
+# we use two databases, one for the main meters and one for the appliances, both running on the same server
 
-influxHost: IP
-influxPort: PORT
-influxUsername: USERNAME
-influxPassword: PASSWIORD
-influxDatabse: NAME OF THE DATABASE IN INFLUXDB
+meter_connection:
+    influxHost:
+    influxPort:
+    influxUsername:
+    influxPassword:
+    influxDatabase:
+    measurement:
+    valueNames:
+    tag:
+    devices:
+    - {type: mains, name: 7}
+
+appliance_connection:
+  influxHost:
+  influxPort:
+  influxUsername:
+  influxPassword:
+  influxDatabase:
+  measurement:
+  valueNames:
+  tag:
+  devices: # list of appliance data to parse from influxdb
+    - {room: 00b17, type: television, name: tasmota_juelich-00b17_whiteboard}
+    - {room: 00b17, type: microwave, name: tasmota_juelich-00b17_microwave}
+    - {room: 00b17, type: electric shower heater, name: tasmota_juelich-00b17_durchlauferhitzer}
+    - {room: 00b17, type: kettle, name: tasmota_juelich-00b17_wasserkocher}
+    - {room: 00b17, type: coffee maker, name: tasmota_juelich-00b17_steckdosenleiste-kaffemaschine}
