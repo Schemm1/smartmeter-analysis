@@ -61,6 +61,10 @@ def main():
         os.remove('campus_juelich/labels.dat')
     except OSError:
         pass
+    # check if directory campus_juelich exists. If not, create it
+    if not os.path.exists('campus_juelich'):
+        os.makedirs('campus_juelich')
+
     for device in data:
         device[1].to_csv(f'campus_juelich/{i}.csv', index_label='timestamp')
         # save to campus_juelich/labels.dat
