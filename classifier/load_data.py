@@ -243,7 +243,7 @@ def createcnn_model(x_train, y_train, epochs, window, features):
     model.add(Input(shape=(window, features,)))
     # reshape the input to (window, features, 1)
     model.add(Reshape((window, features, 1)))
-    model.add(Convolution1D(filters=16, kernel_size=4, padding="valid", activation="relu"))
+    model.add(Convolution1D(filters=16, kernel_size=4, strides=1, padding="same", activation="relu"))
     model.add(Flatten())
     model.add(Dense(1024, activation="relu"))
     model.add(Dense(512, activation="relu"))
