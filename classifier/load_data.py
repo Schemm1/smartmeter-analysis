@@ -81,7 +81,9 @@ def create_dataset(data: dict, appliances: list) -> (np.array, np.array):
             # resample X and Y to 10 seconds
             x_temp = x_temp.resample('10S').mean()
             y_temp = y_temp.resample('10S').mean()
-
+            # drop all rows with nan values
+            x_temp = x_temp.dropna()
+            y_temp = y_temp.dropna()
             # append to x and y
             x = np.append(x, x_temp.values, axis=0)
             y = np.append(y, y_temp.values, axis=0)
