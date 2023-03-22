@@ -2,33 +2,31 @@ import numpy as np
 import pandas as pd
 from nilmtk import DataSet
 from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
-import keras
-from keras.layers import Input, Dense, Flatten, Convolution1D, LSTM, ConvLSTM2D, Reshape, Convolution2D
-from keras.utils.vis_utils import plot_model
-from keras.models import Model, Sequential
-import keras.callbacks
-from keras.callbacks import ModelCheckpoint
-from keras.models import model_from_json
+from tensorflow import keras
+from tensorflow.keras.layers import Input, Dense, Flatten, Convolution1D, LSTM, ConvLSTM2D, Reshape, Convolution2D
+from tensorflow.keras.models import Model, Sequential
+import tensorflow.keras.callbacks
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.models import model_from_json
 import pickle
 import json
 
 # dict with dataset and building number
 data = {
-    '../NOWUM-dataset-builder/NOWUM-Energy-Dataset.h5':
-        {
-            'buildings': [1],
-            'start_time': None,
-            'end_time': None
-        }
-    # '../ukdale.h5':
+    # '../NOWUM-dataset-builder/NOWUM-Energy-Dataset.h5':
     #     {
-    #         'buildings': [1, 5],
+    #         'buildings': [1],
     #         'start_time': None,
     #         'end_time': None
-    #         # 'start_time': '2013-04-01',
-    #         # 'end_time': '2013-05-01'
     #     }
+    '../ukdale.h5':
+        {
+            'buildings': [1, 5],
+            'start_time': None,
+            'end_time': None
+            # 'start_time': '2013-04-01',
+            # 'end_time': '2013-05-01'
+        }
 }
 
 
@@ -229,10 +227,10 @@ def createcnn_model(x_train, y_train, epochs, window, features):
 
     model.compile(optimizer='adam', loss='binary_crossentropy')
     history = LossHistory()
-    checkpointer = ModelCheckpoint(filepath=best_weights_during_run, save_best_only=True, verbose=1)
-    history = model.fit(x_train, y_train, epochs=epochs, verbose=2, shuffle=True, callbacks=[history, checkpointer], validation_split=0.2)
+    checkpointer = ModelCheckpoint(filepath=best_weights_during_run, save_best_only=True, verbose=2)
+    model.fit(x_train, y_train, epochs=epochs, verbose=2, shuffle=True, callbacks=[history, checkpointer], validation_split=0.2, steps_per_epoch=1000)
 
-    losses_dic = {'train_loss': history.train_losses, 'valid_loss':history.valid_losses}
+    losses_dic = {'train_loss': history.train_losses, 'valid_loss': history.valid_losses}
 
     with open(loss_history, 'wb') as handle:
         pickle.dump(losses_dic, handle)
@@ -249,11 +247,6 @@ def createcnn_model(x_train, y_train, epochs, window, features):
 
     print('This was the model trained')
     print(model.summary())
-    # save
-    with open(loss_history, 'wb') as handle:
-        pickle.dump(losses_dic, handle)
-
-    return model, history
 
 
 def main():
@@ -262,7 +255,7 @@ def main():
     x_train, y_train = scale_data(x_train, y_train)
     x_train, y_train = create_windowed_data(x_train, y_train, 6)
     x_train, y_train = shuffle_data(x_train, y_train)
-    model, history = createcnn_model(x_train, y_train, 1, 6, 2)
+    createcnn_model(x_train, y_train, 10, 6, 2)
 
 
 if __name__ == '__main__':
