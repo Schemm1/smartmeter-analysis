@@ -263,6 +263,7 @@ def createcnn_model(x_train, y_train, epochs, window, features):
     model.compile(optimizer='adam', loss='binary_crossentropy')
     history = LossHistory()
     checkpointer = ModelCheckpoint(filepath=best_weights_during_run, save_best_only=True, verbose=2)
+    print('\n now training the model ... \n')
     model.fit(x_train, y_train, epochs=epochs, verbose=2, shuffle=True, callbacks=[history, checkpointer], validation_split=0.2, steps_per_epoch=1000)
 
     losses_dic = {'train_loss': history.train_losses, 'valid_loss': history.valid_losses}
@@ -285,8 +286,12 @@ def createcnn_model(x_train, y_train, epochs, window, features):
 
 
 def main():
-    # x, y = get_traing_data(data, ['television', 'microwave', 'electric shower heater', 'kettle', 'coffee maker'])
     x_train, y_train = create_dataset(data, ['television', 'microwave', 'kettle', 'coffee maker'])
+    print(f'x shape: {x_train.shape}')
+    print(f'y shape: {y_train.shape}')
+    x_train, y_train = reduce_zeros(x_train, y_train)
+    print(f'x shape after reducing zeros: {x_train.shape}')
+    print(f'y shape after reducing zeros: {y_train.shape}')
     x_train, y_train = scale_data(x_train, y_train)
     x_train, y_train = create_windowed_data(x_train, y_train, 6)
     x_train, y_train = shuffle_data(x_train, y_train)
