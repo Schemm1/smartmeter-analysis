@@ -243,21 +243,18 @@ def createcnn_model(x_train, y_train, epochs, window, features):
     model.add(Input(shape=(window, features,)))
     # reshape the input to (window, features, 1)
     model.add(Reshape((window, features, 1)))
-    model.add(Convolution1D(filters=30, kernel_size=10, strides=1, padding="same", activation="relu"))
-    model.add(Convolution1D(filters=30, kernel_size=8, strides=1, padding="same", activation="relu"))
-    model.add(Convolution1D(filters=30, kernel_size=6, strides=1, padding="same", activation="relu"))
-    model.add(Convolution1D(filters=30, kernel_size=5, strides=1, padding="same", activation="relu"))
-    model.add(Convolution1D(filters=30, kernel_size=5, strides=1, padding="same", activation="relu"))
+    model.add(Convolution1D(filters=16, kernel_size=3, padding="valid", activation="relu"))
     model.add(Flatten())
     model.add(Dense(1024, activation="relu"))
+    model.add(Dense(512, activation="relu"))
     model.add(Dense(4, activation="sigmoid"))
 
     model.compile(optimizer='adam', loss='binary_crossentropy')
     history = LossHistory()
-    checkpointer = ModelCheckpoint(filepath=best_weights_during_run, save_best_only=True, verbose=2)
+    checkpointer = ModelCheckpoint(filepath=best_weights_during_run, save_best_only=True, verbose=1)
     print('\n now training the model ... \n')
-    model.fit(x_train, y_train, epochs=epochs, verbose=2, shuffle=True, callbacks=[history, checkpointer],
-              validation_split=0.2, steps_per_epoch=1000)
+    model.fit(x_train, y_train, epochs=epochs, verbose=1, shuffle=True, callbacks=[history, checkpointer],
+              validation_split=0.2, steps_per_epoch=3000)
 
     losses_dic = {'train_loss': history.train_losses, 'valid_loss': history.valid_losses}
 
@@ -288,7 +285,7 @@ def main():
     x_train, y_train = scale_data(x_train, y_train)
     x_train, y_train = create_windowed_data(x_train, y_train, 6)
     x_train, y_train = shuffle_data(x_train, y_train)
-    createcnn_model(x_train, y_train, 10, 6, 2)
+    createcnn_model(x_train, y_train, 25, 6, 2)
 
 
 if __name__ == '__main__':
