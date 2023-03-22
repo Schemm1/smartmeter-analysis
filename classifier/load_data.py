@@ -91,7 +91,6 @@ def create_dataset(data: dict, appliances: list) -> (np.array, np.array):
     return x, y
 
 
-# now we need a function that reduces 0 in the dataset
 def reduce_zeros(x: np.array, y: np.array) -> (np.array, np.array):
     """
     Reduce the number of 0s in the dataset.
@@ -108,21 +107,12 @@ def reduce_zeros(x: np.array, y: np.array) -> (np.array, np.array):
     y : numpy array
         The labels
     """
-    # get the indices of the rows where there is an activation
-    indices = np.where(y > 0)
-    # get the indices of the rows where there is no activation
-    indices_zeros = np.where(y == 0)
-    # get the number of rows where there is an activation
-    number_of_activations = len(indices[0])
-    # get the number of rows where there is no activation
-    number_of_zeros = len(indices_zeros[0])
-    # get the number of rows that should be removed
-    number_of_rows_to_remove = int(number_of_zeros * 0.75)
-    # get the indices of the rows that should be removed
-    indices_to_remove = np.random.choice(indices_zeros[0], number_of_rows_to_remove, replace=False)
-    # remove the rows
-    x = np.delete(x, indices_to_remove, axis=0)
-    y = np.delete(y, indices_to_remove, axis=0)
+    # get the indices of the rows that contain only 0s
+    indices = np.where(~y.any(axis=1))[0]
+    # delete randomly 75 % of the rows that contain only 0s
+    indices = np.random.choice(indices, int(len(indices) / 2), replace=False)
+    x = np.delete(x, indices, axis=0)
+    y = np.delete(y, indices, axis=0)
     return x, y
 
 
@@ -266,7 +256,8 @@ def createcnn_model(x_train, y_train, epochs, window, features):
     history = LossHistory()
     checkpointer = ModelCheckpoint(filepath=best_weights_during_run, save_best_only=True, verbose=2)
     print('\n now training the model ... \n')
-    model.fit(x_train, y_train, epochs=epochs, verbose=2, shuffle=True, callbacks=[history, checkpointer], validation_split=0.2, steps_per_epoch=1000)
+    model.fit(x_train, y_train, epochs=epochs, verbose=2, shuffle=True, callbacks=[history, checkpointer],
+              validation_split=0.2, steps_per_epoch=1000)
 
     losses_dic = {'train_loss': history.train_losses, 'valid_loss': history.valid_losses}
 
