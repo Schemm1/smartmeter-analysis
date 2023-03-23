@@ -13,7 +13,7 @@ import json
 
 # dict with dataset and building number
 data = {
-    # '../NOWUM-dataset-builder/NOWUM-Energy-Dataset.h5':
+    # '../nowumdataset/NOWUM-Energy-Dataset.h5':
     #     {
     #         'buildings': [1],
     #         'start_time': None,
