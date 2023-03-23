@@ -109,8 +109,8 @@ def reduce_zeros(x: np.array, y: np.array) -> (np.array, np.array):
     """
     # get the indices of the rows that contain only 0s
     indices = np.where(~y.any(axis=1))[0]
-    # delete randomly 75 % of the rows that contain only 0s
-    indices = np.random.choice(indices, int(len(indices) / 2), replace=False)
+    # delete randomly 80 % of the rows that contain only 0s
+    indices = np.random.choice(indices, int(len(indices) * 0.8), replace=False)
     x = np.delete(x, indices, axis=0)
     y = np.delete(y, indices, axis=0)
     return x, y
@@ -253,7 +253,7 @@ def createcnn_model(x_train, y_train, epochs, window, features):
     history = LossHistory()
     checkpointer = ModelCheckpoint(filepath=best_weights_during_run, save_best_only=True, verbose=1)
     print('\n now training the model ... \n')
-    model.fit(x_train, y_train, epochs=epochs, verbose=1, shuffle=True, callbacks=[history, checkpointer],
+    model.fit(x_train, y_train, epochs=epochs, verbose=1, callbacks=[history, checkpointer],
               validation_split=0.2, steps_per_epoch=3000)
 
     losses_dic = {'train_loss': history.train_losses, 'valid_loss': history.valid_losses}
@@ -284,7 +284,8 @@ def main():
     print(f'y shape after reducing zeros: {y_train.shape}')
     x_train, y_train = scale_data(x_train, y_train)
     x_train, y_train = create_windowed_data(x_train, y_train, 6)
-    x_train, y_train = shuffle_data(x_train, y_train)
+    print(f'first training without shuffling the data...')
+    # x_train, y_train = shuffle_data(x_train, y_train)
     createcnn_model(x_train, y_train, 25, 6, 2)
 
 
