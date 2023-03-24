@@ -75,7 +75,7 @@ def create_dataset(data: dict, appliances: list) -> (np.array, np.array):
                 activations = pd.concat(activations)
                 activations = pd.DataFrame(activations)
                 activations.columns = [appliance]
-                x_temp = x_temp.join(activations, how='outer').fillna(0)
+                x_temp = x_temp.join(activations, how='left').fillna(0)
             y_temp = x_temp.drop(columns=['apparent', 'active'])
             x_temp = x_temp[['apparent', 'active']]
             # resample X and Y to 10 seconds
